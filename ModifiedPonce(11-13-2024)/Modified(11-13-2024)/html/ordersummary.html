@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        /* Main Section Styling */
+        main {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h2, h3, h4 {
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        /* Order Details List */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        /* Total Section */
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            border-top: 2px solid #000;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+
+        /* Dine and Payment Options */
+        .dine-option, .pay-option {
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        /* Button Styling */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-button {
+            background-color: #ff4d4d;
+            color: white;
+            margin-left: 700px;
+        }
+
+        .confirm-button {
+            background-color: #4CAF50;
+            color: white;
+            margin-right: 700px;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            .button-container {
+                display: none; /* Hide the button container during printing */
+            }
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+            padding-top: 100px;
+            text-align: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            margin: auto;
+            font-size: 18px;
+        }
+
+        .modal-message {
+            font-size: 20px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <main>
+        <header>
+            <h1>Order Summary</h1>
+        </header>
+        <div id="summary"></div>
+    </main>
+    <div class="button-container">
+        <button class="delete-button" id="deleteOrder">Delete Order</button>
+        <button class="confirm-button" id="confirmOrder">Confirm Order</button>
+    </div>
+
+    <!-- Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-message">Your order has been confirmed! Printing completed.</div>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to format currency
+        function formatCurrency(amount) {
+            return `Php ${amount.toFixed(2)}`;
+        }
+
+        // Retrieve the current orderId and initialize orderId from localStorage or default to 1
+        let orderId = parseInt(localStorage.getItem('orderId')) || 1;
+
+        // Retrieve order summary from localStorage
+        const orderSummary = JSON.parse(localStorage.getItem('orderSummary'));
+        
+        if (orderSummary) {
+            const summaryDiv = document.getElementById('summary');
+            summaryDiv.innerHTML = ` 
+                <h2 class="dine-option">Dine Option: ${orderSummary.dineOption}</h2>
+                <h2 class="pay-option">Payment Option: ${orderSummary.paymentOption}</h2>
+                <h3>Total Amount: ${formatCurrency(orderSummary.total)}</h3>
+                <h4>Order Details:</h4>
+                <ul>
+                    ${Object.entries(orderSummary.orders).map(([itemName, details]) => `
+                        <li>${itemName} <span>${formatCurrency(details.price)} x ${details.quantity}</span></li>
+                    `).join('')}
+                </ul>
+                <div class="total">Total: ${formatCurrency(orderSummary.total)}</div>`;
+        } else {
+            document.getElementById('summary').innerHTML = '<p>No order found.</p>';
+        }
+
+        // Flag to prevent multiple confirmations
+        let isConfirmed = false;
+
+        // Delete Order Button Functionality
+        document.getElementById('deleteOrder').addEventListener('click', () => {
+            // Allow editing the order if it has been confirmed
+            if (isConfirmed) {
+                window.location.href = 'order2.html'; // Redirect to the order page for editing
+            } else {
+                localStorage.removeItem('orderSummary');
+                window.location.href = 'order2.html'; // Redirect to order page to re-order
+            }
+        });
+
+        // Confirm Order Button Functionality
+        document.getElementById('confirmOrder').addEventListener('click', () => {
+            if (!orderSummary) {
+                alert('No order summary found. Please add items to your order.');
+                return;
+            }
+
+            isConfirmed = true;
+
+            // Prepare the sales order
+            const salesOrder = {
+                orderId: orderId,
+                summary: Object.keys(orderSummary.orders).join(", "),
+                diningPreference: orderSummary.dineOption,
+                paymentMethod: orderSummary.paymentOption,
+                total: formatCurrency(orderSummary.total)
+            };
+
+            // Retrieve current sales data
+            let salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+
+            // Update sales data in localStorage
+            salesData.push(salesOrder);
+            localStorage.setItem('salesData', JSON.stringify(salesData));
+
+            // Clear the order summary to prevent duplicate entries
+            localStorage.removeItem('orderSummary');
+
+            // Increment orderId for the next order and save it
+            orderId++;
+            localStorage.setItem('orderId', orderId);
+
+            // Show the modal after printing
+            window.print();
+
+            // Show the modal message
+            const modal = document.getElementById('confirmationModal');
+            modal.style.display = "block";
+
+            // Close the modal after 5 seconds
+            setTimeout(() => {
+        modal.style.display = "none";  // Hide the modal
+        window.location.href = "index.html";  // Redirect to index.html after 5 seconds
+    }, 5000);
+});
+
+</script>
+
+</body>
+</html>
