@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="../css/FontAwesome/all.min.css">
+    <link rel="stylesheet" href="../css/FontAwesome/fontawesome.min.css">
+
+    <style>
+
+        /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    padding: 0 8%;
+    color: #333;
+    line-height: 1.6;
+    
+}
+
+/* Header */
+.header {
+    padding: 1.5rem 0;
+}
+
+.header-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Search Box */
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #e0f2e9;
+    border-radius: 15px;
+    padding: 0.8rem 2rem;
+    flex: 1;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.search-box i {
+    margin-right: 12px;
+    color: #444;
+    font-size: 1.2rem;
+}
+
+.search-box input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+/* Cover Section */
+.cover {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../css/asd.png');
+    background-size: cover;
+    height: 40vh;
+    background-position: center;
+    border-radius: 12px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.cover h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.cover span {
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+/* Section Heading */
+.section-heading {
+    font-size: 1.8rem;
+    margin: 3rem 0 1.5rem;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    color: #444;
+}
+
+/* Card List */
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 250px;
+    text-align: center;
+    flex: 1 1 calc(25% - 20px);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.card-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.card-price .price {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.add-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+    background-color: #45a049;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    transition: right 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar.show {
+    right: 0;
+}
+
+.sidebar-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sidebar-close {
+    font-size: 37px;
+    cursor: pointer;
+    color: #333;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.sidebar-close:hover {
+    color: crimson; /* Changes the "X" to red */
+}
+
+
+/* Order List */
+.order-list {
+    margin: 20px 0;
+    padding: 10px 0;
+    overflow-y: auto;
+}
+
+/* Order Item */
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+    gap: 10px;
+}
+
+.order-item-name {
+    font-weight: bolder;
+    flex: 2;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.order-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 8px;
+}
+
+.decrement-btn, .increment-btn {
+    background-color: #FFC107;
+    color: white;
+    border: none;
+    padding: 9px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.decrement-btn:hover, .increment-btn:hover {
+    background-color: #ff9f00;
+}
+
+.quantity {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    width: 20px;
+}
+
+.order-item-price {
+    font-size: 1.2rem;
+    color: #333;
+    flex: 1;
+    text-align: right;
+}
+
+.remove-btn {
+    background-color: #FF0000;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    flex: 0.5;
+}
+
+.remove-btn:hover {
+    background-color: #e60000;
+}
+
+/* Total Amount */
+.order-total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.order-summary {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 350px;
+    margin: 20px auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.order-total {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #444;
+}
+
+.order-total .price {
+    color: #4CAF50;
+}
+
+.checkout-btn {
+    background-color: #4CAF50;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+    background-color: #45a049;
+}
+
+/* Floating Eat Icon */
+.eat-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #e0f2e9;
+    color: black;
+    padding: 15px;
+    border-radius: 20%;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+    </style>
+
+    
+</head>
+<body>
+    <header class="header">
+        <nav class="header-menu">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search for dishes...">
+            </div>
+        </nav>
+    </header>
+
+    <section class="cover">
+        <div>
+            <h1>Maharlika Flavors</h1>
+            <span>Authentic Filipino Dishes with a Modern Twist</span>
+        </div>
+    </section>
+
+    <main>
+        <h2 class="section-heading">Food Menu</h2>
+        <!-- The menu sections will be dynamically generated -->
+    </main>
+
+    <div class="eat-icon">
+        <i class="fa-solid fa-utensils"></i>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-close">&times;</div>
+    
+        <!-- Sidebar Title -->
+        <h2 class="sidebar-title">Order Details</h2> 
+    
+        <!-- Order List -->
+        <div class="order-list">
+            <!-- Dynamically generated order items will go here -->
+        </div>
+    
+        <div class="order-summary">
+            <!-- Dining Option -->
+            <div class="form-group">
+                <h4>Select Dining Option:</h4>
+                <select name="dine-option" id="dine-option">
+                    <option value="Dine In" selected>Dine In</option>
+                    <option value="Take Out">Take Out</option>
+                </select>
+            </div>
+        
+            <!-- Payment Option -->
+            <div class="form-group">
+                <h4>Select Payment Option:</h4>
+                <select name="pay-option" id="pay-option">
+                    <option value="Cash" selected>Cash</option>
+                    <option value="GCASH">GCASH</option>
+                </select>
+            </div>
+        
+            <!-- Total -->
+            <div class="order-total">
+                <span>Total: </span><span class="price">Php 1070.00</span>
+            </div>
+        
+            <!-- Checkout Button -->
+            <button class="checkout-btn">Checkout</button>
+        </div>
+        
+    
+    
+    <script>
+        // Menu Items
+        const menuItems = [
+            {
+                category: "Appetizers",
+                items: [
+                    {
+                        name: "Kinilaw na Tanigue",
+                        description: "Fresh tanigue fish marinated in vinegar, coconut milk, and spices",
+                        price: 120,
+                        image: "../css/Appetizers/Kinilaw.jpg"
+                    },
+                    {
+                        name: "Pugon Baked Oysters",
+                        description: "Oysters baked in a wood-fired oven with garlic-butter sauce",
+                        price: 140,
+                        image: "../css/Appetizers/Pugon.jpg"
+                    },
+                    {
+                        name: "Chicharong Bulaklak",
+                        description: "Crispy and well seasoned pork ruffles served with spiced vinegar",
+                        price: 120,
+                        image: "../css/Appetizers/Bulaklak.jpg"
+                    },
+                    {
+                        name: "Sinuglaw",
+                        description: "Grilled to perfection pork belly mixed with fresh fish ceviche",
+                        price: 180,
+                        image: "../css/Appetizers/Sinuglaw.jpg"
+                    },
+                    {
+                        name: "Pritong Lumpiang Ubod",
+                        description: "Deep-fried spring rolls filled with heart of palm and shrimp",
+                        price: 100,
+                        image: "../css/Appetizers/Lumpiang Ubod.jpg"
+                    }
+                ]
+            },
+            {
+                category: "Main Dishes",
+                items: [
+                    {
+                        name: "Grilled Liempo",
+                        description: "Grilled pork belly marinated in native herbs and served with sinamak vinegar",
+                        price: 180,
+                        image: "../css/Main Dishes/baboy.jpg"
+                    },
+                    {
+                        name: "Ilocos Bagnet",
+                        description: "A boiled, air-dried, then deep-fried slabs of pork belly to perfection.",
+                        price: 180,
+                        image: "../css/Main Dishes/bagnet.jpg"
+                    },
+                    {
+                        name: "Beef Kaldereta",
+                        description: "A rich, very filling meaty dish served on a bed of cooked rice",
+                        price: 120,
+                        image: "../css/Main Dishes/kaldereta.jpg"
+                    },
+                    {
+                        name: "Crispy Pata",
+                        description: "Crispy deep-fried pork knuckle served with soy-vinegar dipping sauce",
+                        price: 150,
+                        image: "../css/Main Dishes/pata.jpg"
+                    },
+                    {
+                        name: "Pochero",
+                        description: "Beef shank stew slow-cooked with fresh coconut water and native vegetables",
+                        price: 170,
+                        image: "../css/Main Dishes/pchero.jpg"
+                    }
+                ]
+            },
+            {
+                category: "Rice and Noodles",
+                items: [
+                    {
+                        name: "Bringhe",
+                        description: "Traditional Filipino rice dish with glutin rice, coconut milk, saffron, and chicken mixed with Perfection",
+                        price: 80,
+                        image: "../css/Rice and Noodles/Bringhe.jpg"
+                    },
+                    {
+                        name: "Aligue Fried Rice",
+                        description: "Fried rice infused with rich crab fat (aligue) and garlic, delivering a luxurious flavor in every bite.",
+                        price: 80,
+                        image: "../css/Rice and Noodles/Aligue Fried Rice.jpg"
+                    },
+                    {
+                        name: "Garlic Fried Rice",
+                        description: "Fragrant jasmine rice stir-fried with aromatic garlic and green onions, enhanced with a hint of soy sauce.",
+                        price: 20,
+                        image: "../css/Rice and Noodles/garlic fried rice.jpg"
+                    },
+                    {
+                        name: "Pancit Malabon",
+                        description: "Thick savory rice noodles topped with seafood, eggs, and our signature flavorful shrimp sauce",
+                        price: 40,
+                        image: "../css/Rice and Noodles/pancit malabon.jpg"
+                    }
+                ]
+            },
+            {
+                category: "Seafood Specialties",
+                items: [
+                    {
+                        name: "Crab in Coconut Milk",
+                        description: "King Crab cooked with perfection, with juicy vegetables and a rich coconut milk sauce for its Milky sweet balanced taste",
+                        price: 180,
+                        image: "../css/Seafood Specialties/ginataang alimasag.jpg"
+                    },
+                    {
+                        name: "Shrimp in Tamarind Sauce",
+                        description: "Succulent shrimp cooked in a tangy tamarind sauce, offering a perfect balance of sweet and sour flavors.",
+                        price: 180,
+                        image: "../css/Seafood Specialties/hipon sa sampalok.jpg"
+                    },
+                    {
+                        name: "Grilled Squid",
+                        description: "Grilled squid marinated in a savory blend of spices, served tender and smoky, perfect as an appetizer or main dish.",
+                        price: 120,
+                        image: "../css/Seafood Specialties/inihaw na pusit.jpg"
+                    },
+                    {
+                        name: "Grilled Prawns",
+                        description: "Grilled prawns marinated perfectly and cooked to perfection, delivering a smoky flavor and succulent texture.",
+                        price: 140,
+                        image: "../css/Seafood Specialties/inihaw na sugpo.jpg"
+                    }
+                ]
+            },
+            {
+                category: "Vegetarian Dishes",
+                items: [
+                    {
+                        name: "Fern Salad",
+                        description: "A refreshing salad made with tender fiddlehead ferns, tossed with tomatoes, onions, and a tangy dressing for a vibrant and healthy dish.",
+                        price: 120,
+                        image: "../css/Vegetarian Dishes/ensaladong pako.jpg"
+                    },
+                    {
+                        name: "Laing",
+                        description: "Taro leaves cooked in creamy coconut milk with spices and chili, creating a rich and flavorful dish with a hint of heat.",
+                        price: 140,
+                        image: "../css/Vegetarian Dishes/laing.jpg"
+                    },
+                    {
+                        name: "Ilocano Vegetable Stew",
+                        description: "A hearty mix of vegetables, including bitter melon, eggplant, and squash, sautéed with shrimp paste.",
+                        price: 110,
+                        image: "../css/Vegetarian Dishes/pinakbet ilocano.jpg"
+                    },
+                    {
+                        name: "Eggplant Omelette",
+                        description: "Grilled eggplant mixed with beaten eggs and pan-fried until golden, offering a delicious and satisfying meal or side dish.",
+                        price: 130,
+                        image: "../css/Vegetarian Dishes/tortang talong.jpg"
+                    }
+                ]
+            },
+            {
+                category: "Desserts",
+                items: [
+                    {
+                        name: "Bibingka",
+                        description: "A traditional Filipino rice cake made from rice flour and coconut milk, baked to perfection and topped with salted eggs and grated coconut. For Rich Taste and Aroma",
+                        price: 180,
+                        image: "../css/Desserts/Bibingka.jpg"
+                    },
+                    {
+                        name: "Leche Flan",
+                        description: "A rich and creamy custard topped with a smooth caramel sauce, offering a delightful balance of sweetness and texture. Perfect for your sweet cravings",
+                        price: 180,
+                        image: "../css/Desserts/Leche Flan.jpg"
+                    },
+                    {
+                        name: "Pastillas Cheesecake",
+                        description: "A unique twist on cheesecake, blending creamy cheese with the sweet flavors of pastillas, topped with a dusting of powdered sugar for a delightful treat.",
+                        price: 120,
+                        image: "../css/Desserts/pastillas chiskik.jpg"
+                    },
+                    {
+                        name: "Suman with Chocolate",
+                        description: "Sticky rice cake wrapped in Pandan steamed banana leaves, served with a rich dark chocolate sauce for dipping, combining sweet, strong and creamy flavors to satisfy your belly.",
+                        price: 150,
+                        image: "../css/Desserts/suman at tsokolit.jpg"
+                    },
+                    {
+                        name: "Ube Halaya Cheesecake",
+                        description: "A vibrant cheesecake infused with creamy ube (purple yam), creating a deliciously unique dessert with a hint of sweetness and a beautiful color.",
+                        price: 150,
+                        image: "../css/Desserts/Ube Halaya Cheesecake.jpg"
+                    }
+                ]
+            },
+            {
+                category: "Beverages",
+                items: [
+                    {
+                        name: "Cookies and Cream Milkshake",
+                        description: "A creamy blend of vanilla ice cream, crushed cookies, and milk, topped with whipped cream for an indulgent treat.",
+                        price: 90,
+                        image: "../css/Beverages/Cookies and Cream Milkshake.jpg"
+                    },
+                    {
+                        name: "Dalandan Cooler",
+                        description: "A refreshing drink made from sweet dalandan (Philippine orange) juice, mixed with soda and served over ice, Fuel for thirst.",
+                        price: 80,
+                        image: "../css/Beverages/Dalandan Cooler.jpg"
+                    },
+                    {
+                        name: "Kapeng Barako",
+                        description: "Strong and aromatic coffee made from Barako beans, known for its bold and rich aroma, served hot or iced depending on your mood",
+                        price: 50,
+                        image: "../css/Beverages/Kapeng Barako.jpg"
+                    },
+                    {
+                        name: "Salabat Iced Tea",
+                        description: "A refreshing iced tea infused with ginger (salabat), offering a zesty and soothing flavor that’s perfect for any time of the day.",
+                        price: 40,
+                        image: "../css/Beverages/Salabat Iced Tea.jpg"
+                    }
+                ]
+            }
+        ]; 
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const main = document.querySelector('main');
+    const sidebar = document.getElementById('sidebar');
+    const eatIcon = document.querySelector('.eat-icon');
+    const sidebarClose = document.querySelector('.sidebar-close');
+    const orderList = document.querySelector('.order-list');
+    const totalAmount = document.querySelector('.order-total');
+    const checkoutButton = document.querySelector('.checkout-btn');
+    const searchInput = document.getElementById('searchInput');
+
+    const dineOptionSelect = document.getElementById('dine-option');
+    const payOptionSelect = document.getElementById('pay-option');
+
+    let total = 0;
+    let orders = {}; // Store orders with quantities
+
+    // Populate menu dynamically
+    function populateMenu() {
+        menuItems.forEach(category => {
+            const section = document.createElement('section');
+            section.classList.add('section-header');
+
+            const heading = document.createElement('h3');
+            heading.textContent = category.category;
+
+            const cardList = document.createElement('div');
+            cardList.classList.add('card-list');
+
+            category.items.forEach(item => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                const img = document.createElement('img');
+                img.src = item.image;
+                img.alt = item.name;
+
+                const title = document.createElement('h4');
+                title.classList.add('card-title');
+                title.textContent = item.name;
+
+                const description = document.createElement('p');
+                description.textContent = item.description;
+
+                const cardPrice = document.createElement('div');
+                cardPrice.classList.add('card-price');
+
+                const priceDiv = document.createElement('div');
+                priceDiv.classList.add('price');
+                priceDiv.textContent = `Php ${item.price.toFixed(2)}`;
+
+                const addBtn = document.createElement('button');
+                addBtn.classList.add('add-btn');
+                addBtn.textContent = 'Add';
+                addBtn.addEventListener('click', () => {
+                    addToOrder(item.name, item.price);
+                    sidebar.classList.add('show'); // Ensure sidebar shows
+                });
+
+                cardPrice.appendChild(priceDiv);
+                cardPrice.appendChild(addBtn);
+                card.appendChild(img);
+                card.appendChild(title);
+                card.appendChild(description);
+                card.appendChild(cardPrice);
+                cardList.appendChild(card);
+            });
+
+            section.appendChild(heading);
+            section.appendChild(cardList);
+            main.appendChild(section);
+        });
+    }
+
+    // Add items to order
+    function addToOrder(name, price) {
+        if (orders[name]) {
+            orders[name].quantity++;
+        } else {
+            orders[name] = { price, quantity: 1 };
+        }
+        total += price;
+        updateOrderList();
+    }
+
+    // Update the order list
+    function updateOrderList() {
+        orderList.innerHTML = '';
+        Object.entries(orders).forEach(([name, details]) => {
+            const item = document.createElement('div');
+            item.classList.add('order-item');
+            item.innerHTML = `
+                <span>${name}</span>
+                <div class="order-quantity">
+                    <button class="decrement-btn" data-name="${name}">-</button>
+                    <span class="quantity">${details.quantity}</span>
+                    <button class="increment-btn" data-name="${name}">+</button>
+                </div>
+                <span>Php ${(details.price * details.quantity).toFixed(2)}</span>
+                <button class="remove-btn" data-name="${name}">Remove</button>
+            `;
+
+            // Add event listeners to update quantity and remove
+            item.querySelector('.decrement-btn').addEventListener('click', () => updateQuantity(name, 'decrement'));
+            item.querySelector('.increment-btn').addEventListener('click', () => updateQuantity(name, 'increment'));
+            item.querySelector('.remove-btn').addEventListener('click', () => removeFromOrder(name));
+
+            orderList.appendChild(item);
+        });
+        totalAmount.textContent = `Total: Php ${total.toFixed(2)}`;
+    }
+
+    // Update the quantity of an item
+    function updateQuantity(name, action) {
+        if (orders[name]) {
+            if (action === 'increment') {
+                orders[name].quantity++;
+                total += orders[name].price;
+            } else if (action === 'decrement' && orders[name].quantity > 1) {
+                orders[name].quantity--;
+                total -= orders[name].price;
+            }
+
+            // If quantity is 0, remove the item from the order
+            if (orders[name].quantity === 0) {
+                removeFromOrder(name);
+            }
+
+            updateOrderList();
+        }
+    }
+
+    // Remove items from the order
+    function removeFromOrder(name) {
+        if (orders[name]) {
+            total -= orders[name].price * orders[name].quantity;
+            delete orders[name];
+            updateOrderList();
+        }
+    }
+
+    // Checkout functionality
+    checkoutButton.addEventListener('click', () => {
+        if (Object.keys(orders).length === 0) {
+            alert("Your cart is empty! Add some items to checkout.");
+            return;
+        }
+
+        // Get selected dining and payment options
+        const dineOption = dineOptionSelect.value;
+        const payOption = payOptionSelect.value;
+
+        // Create the order summary
+        let orderSummary = "Your Order:\n";
+        Object.entries(orders).forEach(([name, details]) => {
+            orderSummary += `${details.quantity} x ${name} - Php ${(details.price * details.quantity).toFixed(2)}\n`;
+        });
+        orderSummary += `\nTotal: Php ${total.toFixed(2)}\n`;
+        orderSummary += `Dining Option: ${dineOption}\n`;
+        orderSummary += `Payment Option: ${payOption}\n`;
+
+        // Store order summary in localStorage
+        const orderDetails = {
+            items: orders,
+            total: total,
+            dineOption: dineOption,
+            payOption: payOption
+        };
+        localStorage.setItem('orderSummary', JSON.stringify(orderDetails));
+
+        // Redirect to order summary page
+        window.location.href = "ordersummary.html"; // Make sure this file exists
+    });
+
+    // Sidebar controls
+    eatIcon.addEventListener('click', () => sidebar.classList.add('show'));
+    sidebarClose.addEventListener('click', () => sidebar.classList.remove('show'));
+
+    // Populate the menu on page load
+    populateMenu();
+});
+
+
+</script>
+</body>
+</html>

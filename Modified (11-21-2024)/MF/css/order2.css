@@ -1,0 +1,421 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: whitesmoke;
+    padding: 0 8%;
+}
+
+.header {
+    padding: 1.5rem 0;
+}
+
+.header-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.section-header.hidden {
+    display: none; /* Hides sections by default */
+}
+
+.section-header.show {
+    display: block; /* Shows sections when the 'show' class is applied */
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #E9EED9;
+    border-radius: 12px;
+    flex: 1;
+    padding: 0.5rem 1.5rem;
+}
+
+.search-box i {
+    color: black;
+}
+
+.search-box input {
+    background: transparent;
+    padding: 12px;
+    width: 85%;
+}
+
+/* Cover Section */
+.cover {
+    background-image: url(asd.png);
+    background-size: cover;
+    height: 40vh;
+    background-position: center;
+    border-radius: 12px;
+    margin-top: 15px;
+    color: whitesmoke;
+    font-size: 20px;
+}
+
+.cover-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+/* Section Heading */
+.section-heading {
+    font-size: 20px;
+    text-transform: uppercase;
+    margin: 1.5rem 0 12px 0;
+}
+
+/* Menu List */
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 2rem;
+    justify-content: center; /* Center the cards horizontally */
+}
+
+/* Card */
+.card {
+    flex: 1 1 calc(25% - 40px); /* Adjust the width for four cards per row */
+    max-width: 250px; /* Optional: set a max width for each card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: black;
+}
+
+/* Card Image */
+.card img {
+    width: 150px; /* Set the same width as menu images */
+    height: 150px; /* Set the same height */
+    object-fit: cover; /* Ensures the image covers the area uniformly */
+    border-radius: 8px;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+/* Card Price */
+.card-price {
+    display: flex;
+    align-items: center; /* Vertically center the price and icon */
+    justify-content: space-between; /* Keeps the price on the left and the plus icon on the right */
+    width: 100%; /* Ensures the container takes the full width of the card */
+    margin-top: auto; /* Pushes the price and icon to the bottom */
+}
+
+.card-price .price {
+    font-weight: 600; /* Keep the price bold */
+    font-size: 16px; /* Match font size with paragraph */
+}
+
+/* Checkout button styles */
+.checkout-btn {
+    gap: 5px;
+    width: 100%;
+    padding: 15px; /* Padding */
+    font-size: 1.3rem;
+    background-color: #4CAF50; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 7px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.checkout-btn:hover {
+    background-color: #45a049; /* Darker shade on hover */
+}
+
+/* Order Sidebar */
+.sidebar {
+    max-width: 1200px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 450px; /* Set width of the sidebar */
+    height: 100%; /* Full height */
+    background-color: #fff; /* Background color */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    padding: 20px; /* Inner padding */
+    transform: translateX(100%); /* Initially hidden */
+    transition: transform 0.3s ease; /* Smooth transition */
+    z-index: 1000; /* Ensure sidebar is above other content */
+    overflow-y: auto; /* Allow scrolling */
+    max-height: 100%; /* Ensure it can scroll but won't overflow the page */
+}
+
+/* Show the sidebar when active */
+.sidebar.active {
+    transform: translateX(0); /* Slide in */
+}
+
+/* Order list styles */
+.order-list h3 {
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 5px;
+    width: 100%; /* Ensure it takes the full width of the container */
+}
+
+.item-name {
+    flex: 1; /* Allows it to take up remaining space */
+    margin-right: 10px; /* Add some space between name and quantity control */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate text with ellipsis */
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* Adjusts alignment within */
+    gap: 5px; /* Adds space between buttons and display */
+}
+
+.quantity-btn {
+    background-color: #FFFFFF; /* White background color */
+    border: 1px solid #CCCCCC; /* Light gray border */
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.quantity-display {
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.delete-btn {
+    background-color: #FF0000; /* Red background color */
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #FFFFFF; /* White text color */
+    margin-left: 5px;
+}
+
+.delete-btn:hover {
+    background-color: #CC0000; /* Darker red background color on hover */
+}
+
+/* Style for Add Button */
+.add-btn {
+    background-color: #4CAF50; /* Green background */
+    color: white;              /* White text color */
+    border: none;              /* Remove border */
+    border-radius: 8px;        /* Rounded corners */
+    padding: 10px 20px;        /* Padding for size */
+    font-size: 16px;           /* Font size */
+    cursor: pointer;          /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for background color and scaling */
+}
+
+/* Hover effect */
+.add-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: scale(1.05);     /* Slight scaling effect */
+}
+
+/* Focus effect (when the button is clicked) */
+.add-btn:focus {
+    outline: none;             /* Remove the default focus outline */
+    box-shadow: 0 0 5px 2px rgba(72, 211, 106, 0.8); /* Add a green glow effect */
+}
+
+/* Active state (when the button is clicked) */
+.add-btn:active {
+    transform: scale(0.98);     /* Slight shrink effect when clicked */
+    background-color: #388e3c;  /* Even darker green when pressed */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Hidden by default */
+    width: 300px;
+    height: 100%;
+    background-color: #f4f4f4;
+    transition: right 0.3s ease-in-out; /* Smooth sliding animation */
+    z-index: 999;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.show {
+    right: 0; /* Slide in when show class is added */
+}
+
+.sidebar-close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.order-list {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar-footer {
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+}
+
+.total-container {
+    padding: 20px;
+    font-weight: bold;
+}
+
+.checkout-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.checkout-btn:hover {
+    background-color: #45a049;
+}
+
+.select, .order-total {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* General button styling */
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+/* Add button inside the menu (for adding items to the order) */
+.add-btn {
+    background-color: #4CAF50;  /* Green background */
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+/* Hover and active states for the "Add" button */
+.add-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);  /* Slight lift effect */
+}
+
+.add-btn:active {
+    background-color: #3c8e41;
+    transform: translateY(1px);  /* Press effect */
+}
+
+/* Button for opening the sidebar */
+.eat-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ff5722;  /* Orange background */
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+/* Hover and active states for the sidebar toggle button */
+.eat-icon:hover {
+    background-color: #e64a19;
+    transform: scale(1.1);  /* Slight grow effect */
+}
+
+.eat-icon:active {
+    background-color: #d84315;
+    transform: scale(1);  /* Press effect */
+}
+
+/* Button for closing the sidebar */
+.sidebar-close {
+    font-size: 28px;
+    color: #333;
+    cursor: pointer;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+.sidebar-close:hover {
+    color: #ff5722; /* Change color on hover */
+}
+
+/* Checkout button inside the sidebar */
+.checkout-btn {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    font-size: 18px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+/* Hover and active states for the checkout button */
+.checkout-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);  /* Slight lift effect */
+}
+
+.checkout-btn:active {
+    background-color: #3c8e41;
+    transform: translateY(1px);  /* Press effect */
+}

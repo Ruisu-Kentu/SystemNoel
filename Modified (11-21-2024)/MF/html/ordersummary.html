@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0; /* Remove any default margin for the body */
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px; /* Spacing between heading and content */
+        }
+
+        #order-summary {
+            background-color: #fff;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .order-summary ul {
+            list-style-type: none; /* Remove default bullet points */
+            padding: 0; /* Remove padding for the list */
+            margin: 0; /* Remove margin for the list */
+        }
+
+        .order-summary li {
+            margin: 15px 0; /* Spacing between list items */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd; /* Optional separator for items */
+            padding-bottom: 10px; /* Space below each item */
+        }
+
+        .order-summary li span {
+            font-size: 1.1rem;
+            flex: 1; /* Allow elements to spread out */
+        }
+
+        .order-summary li .remove-btn {
+            background-color: crimson; /* Set the default color to red */
+            color: white; /* White text for better contrast */
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: none; /* Remove the border */
+            transition: background-color 0.3s ease; /* Add smooth hover effect */
+        }
+
+        .order-summary li .remove-btn:hover {
+            background-color: darkred; /* A darker red for hover state */
+        }
+
+        .total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 15px; /* Adjust spacing above total */
+            text-align: right;
+        }
+
+        .confirm-btn, .delete-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px; /* Increased padding for better clickability */
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .confirm-btn:hover, .delete-btn:hover {
+            background-color: #45a049;
+        }
+
+        .delete-btn {
+            background-color: crimson;
+            margin-top: 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: rgb(255, 94, 126);
+        }
+
+        .order-summary {
+            margin-top: 20px; /* Consistent spacing above the order summary */
+            font-size: 1rem;
+            line-height: 1.5; /* Improve readability with proper line spacing */
+        }
+    </style>
+    
+</head>
+<body>
+    <h1>Order Summary</h1>
+    <div id="order-summary">
+        <!-- Order details will be dynamically inserted here -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const orderSummaryElement = document.getElementById('order-summary');
+
+            // Retrieve the order details from localStorage
+            const orderDetails = JSON.parse(localStorage.getItem('orderSummary'));
+
+            if (orderDetails) {
+                let summaryHTML = "<h2>Order Details</h2>";
+
+                // List items in the order
+                summaryHTML += "<div class='order-summary'><ul>";
+                    Object.entries(orderDetails.items).forEach(([name, details]) => {
+                        summaryHTML += `
+                            <li>
+                                <span>${details.quantity} x ${name}</span>
+                                <span>Php ${(details.price * details.quantity).toFixed(2)}</span>
+                                <button class="remove-btn" data-name="${name}">Remove</button>
+                            </li>
+                        `;
+                    });
+                    summaryHTML += "</ul></div>";
+
+                // Show total
+                summaryHTML += `<div class="total">Total: Php ${orderDetails.total.toFixed(2)}</div>`;
+
+                // Show dining and payment options
+                summaryHTML += `<p>Dining Option: ${orderDetails.dineOption}</p>`;
+                summaryHTML += `<p>Payment Option: ${orderDetails.payOption}</p>`;
+
+                // Add the confirm and delete buttons
+                summaryHTML += `
+                    <button class="confirm-btn" id="confirm-order">Confirm Order</button>
+                    <button class="delete-btn" id="delete-order">Delete Order</button>
+                `;
+
+                orderSummaryElement.innerHTML = summaryHTML;
+
+                // Attach event listener to the "Remove" button for each item
+                document.querySelectorAll('.remove-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const itemName = button.getAttribute('data-name');
+                        removeItemFromOrder(itemName);
+                    });
+                });
+
+                // Attach event listener to the "Delete Order" button
+                document.getElementById('delete-order').addEventListener('click', () => {
+                    if (confirm('Are you sure you want to delete your entire order?')) {
+                        localStorage.removeItem('orderSummary');
+                        alert('Your order has been deleted.');
+                        window.location.href = "order2.html"; // Redirect to the order page
+                    }
+                });
+
+                // Attach event listener to the "Confirm Order" button
+                document.getElementById('confirm-order').addEventListener('click', () => {
+                    if (confirm('Are you sure you want to confirm this order?')) {
+                        localStorage.removeItem('orderSummary');  // Clear the order from localStorage
+                        alert('Thank you for your ordering @Maharlika Flavors!');
+                        window.location.href = "index.html"; 
+                    }
+                });
+            } else {
+                orderSummaryElement.innerHTML = "<p>No order found. Please try again.</p>";
+            }
+        });
+
+        // Function to remove an item from the order
+        function removeItemFromOrder(itemName) {
+            const orderDetails = JSON.parse(localStorage.getItem('orderSummary'));
+
+            if (orderDetails && orderDetails.items[itemName]) {
+                // Subtract the total price for the removed item
+                const itemPrice = orderDetails.items[itemName].price * orderDetails.items[itemName].quantity;
+                orderDetails.total -= itemPrice;
+
+                // Remove the item from the orders object
+                delete orderDetails.items[itemName];
+
+                // Update the order in localStorage
+                localStorage.setItem('orderSummary', JSON.stringify(orderDetails));
+
+                // Refresh the page to update the order summary
+                window.location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
